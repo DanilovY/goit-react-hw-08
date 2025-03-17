@@ -1,21 +1,26 @@
 import s from "./Contact.module.css";
-import { FaUser } from "react-icons/fa";
-import { FaPhoneAlt } from "react-icons/fa";
+import { MdPerson } from "react-icons/md";
+import { BsFillTelephoneOutboundFill } from "react-icons/bs";
+import { FaPen } from "react-icons/fa";
 
-const Contact = ({ item, handleDelete }) => {
+const Contact = ({ item, handleDelete, edit }) => {
   return (
     <li className={s.item}>
-      <div className={s.contbox}>
-        <div className={s.contitem}>
-          <FaUser />
-          <p>{item.name}</p>
-        </div>
-        <div className={s.contitem}>
-          <FaPhoneAlt />
-          <p>{item.number}</p>
-        </div>
+      <div>
+        <p className={s.text}>
+          <MdPerson />
+          {item.name}
+        </p>
+        <p className={s.nimber}>
+          <BsFillTelephoneOutboundFill />
+          {item.number}
+        </p>
       </div>
-      <button className={s.contBtn} onClick={() => handleDelete(item.id)}>
+      <button className={s.button} onClick={edit}>
+        <FaPen />
+        Edit
+      </button>
+      <button onClick={() => handleDelete(item.id)} className={s.button}>
         Delete
       </button>
     </li>

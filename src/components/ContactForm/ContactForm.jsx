@@ -1,24 +1,22 @@
-import s from "./ContactForm.module.css";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Field, Form, Formik, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
+import s from "./ContactForm.module.css";
 import * as Yup from "yup";
 import { useCallback } from "react";
-import { addContact } from "../../redux/contactsOps";
+import { addContact } from "../../redux/contacts/operations";
 
-const patternLetters = /^[a-zA-Zа-яА-ЯёЁ]+$/;
-const patternPhone = /^\d{3}-\d{2}-\d{2}$/;
-
+const PatternonlyLetters = /^[A-Za-zА-Яа-яЄєІіЇїҐґ-\s]+$/;
+const PatternPhone = /^(\d{3}-\d{2}-\d{2}|\d{7})$/;
 const ContactSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "min 3 characters")
-    .max(50, "max 50 characters")
+    .max(30, "max 50 characters")
     .required("This field is required")
-    .matches(patternLetters, "Enter only letters"),
+    .matches(PatternonlyLetters, "Enter only letters"),
   number: Yup.string()
-    .min(7, "min 7 numbers")
-    .max(9, "max 7 numbers")
-    .required("This field is required")
-    .matches(patternPhone, "Number format ХХХ-ХХ-ХХ"),
+    .length(9, "Format xxx-xx-xx")
+    .matches(PatternPhone, "Format xxx-xx-xx")
+    .required("Enter a number"),
 });
 
 const ContactForm = () => {
@@ -33,37 +31,49 @@ const ContactForm = () => {
   );
 
   return (
-    <Formik
-      initialValues={{ name: "", number: "" }}
-      onSubmit={hadleSubmit}
-      validationSchema={ContactSchema}
-    >
-      <Form className={s.form}>
-        <label className={s.inputBox}>
-          Name
-          <Field
-            className={s.formField}
-            type="text"
-            name="name"
-            id="name"
-          ></Field>
-          <ErrorMessage name="name" component="p" className={s.error} />
-        </label>
-        <label className={s.inputBox}>
-          Number
-          <Field
-            className={s.formField}
-            type="text"
-            name="number"
-            id="number"
-          ></Field>
-          <ErrorMessage name="number" component="p" className={s.error} />
-        </label>
-        <button className={s.formBtn} type="submit">
-          Add contact
-        </button>
-      </Form>
-    </Formik>
+    <div className={s.div}>
+      <Formik
+        initialValues={{ name: "", number: "" }}
+        onSubmit={hadleSubmit}
+        validationSchema={ContactSchema}
+      >
+        <Form className={s.form}>
+          <label className={s.labell}>
+            Name
+            <Field
+              className={s.input}
+              type="text"
+              name="name"
+              id="name"
+              placeholder="your name..."
+            />
+            <div>
+              <ErrorMessage name="name" className={s.color} component="span" />
+            </div>
+          </label>
+          <label className={s.label}>
+            Number
+            <Field
+              className={s.input}
+              type="text"
+              name="number"
+              id="number"
+              placeholder="your number..."
+            />
+            <div>
+              <ErrorMessage
+                name="number"
+                className={s.color}
+                component="span"
+              />
+            </div>
+          </label>
+          <button className={s.but} type="submit">
+            Add contact
+          </button>
+        </Form>
+      </Formik>
+    </div>
   );
 };
 
