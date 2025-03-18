@@ -40,7 +40,7 @@ const ContactList = () => {
   };
 
   const confirmDelete = () => {
-    dispatch(deleteContact(selectedContact.id));
+    dispatch(deleteContact(selectedContact));
     toast.success("Contact deleted");
     setIsDeleteOpen(false);
   };
